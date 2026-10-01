@@ -1,18 +1,5 @@
 # Syllabus calendar
-
-This is the empty starting point for learning Django by building a syllabus
-calendar yourself. Nothing in the project knows about calendars yet: there are
-no custom models, views, templates, forms, or admin registrations.
-
-## Learning goals
-
-At this stage, learn how to:
-
-- create and activate a Python virtual environment;
-- install Django from `requirements.txt`;
-- understand the difference between a Django **project** and an **app**;
-- read the settings, URL configuration, and `manage.py` entry point;
-- run Django's built-in checks and development server.
+A calendar app that takes a syllabus for a class and automatically makes events that upload to the calendar. The calendar holds features such as the ability to make tasks for an event (which can appear as separate events and appear on a separate to-do list).
 
 ## Setup
 
@@ -39,7 +26,7 @@ python manage.py runserver
 The project has only Django's default admin URL at
 <http://127.0.0.1:8000/admin/>. There is no custom calendar page yet.
 
-## What the starting files do
+## Starting files
 
 - `manage.py` is the command-line entry point for Django commands.
 - `syllabus_calendar/settings.py` contains project configuration, including the
@@ -52,18 +39,3 @@ The project has only Django's default admin URL at
 - `.gitignore` keeps local Python caches, virtual environments, and databases
   out of version control.
 
-## Suggested next learning steps
-
-Add one small piece at a time and run `python manage.py check` after each
-change:
-
-1. Create a `calendar_app` with `python manage.py startapp calendar_app`.
-2. Add one simple model and learn how `makemigrations` and `migrate` work.
-3. Register that model in the admin so you can enter one record manually.
-4. Write one view and URL, then return a plain response.
-5. Replace the response with a template that lists your records.
-6. Add PDF upload and parsing only after the manual data path is clear.
-7. Add event editing, task generation, daily to-do lists, countdowns,
-   reminders, and customization as separate milestones.
-
-The goal is to understand each layer before adding the next one.

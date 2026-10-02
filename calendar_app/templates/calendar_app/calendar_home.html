@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Syllabus Calendar</title>
+</head>
+<body>
+    <h1>My Syllabus Calendar</h1>
+
+    <h2>Upcoming Events</h2>
+
+    {% if events %}
+        <ul>
+            {% for event in events %}
+                <li>
+                    <strong>{{ event.title }}</strong>
+                    — {{ event.date }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No events have been added yet.</p>
+    {% endif %}
+</body>
+</html>

@@ -23,16 +23,12 @@ Start the development server:
 python manage.py runserver
 ```
 
-The project has only Django's default admin URL at
-<http://127.0.0.1:8000/admin/>. There is no custom calendar page yet.
-
 ## Starting files
 
 - `manage.py` is the command-line entry point for Django commands.
 - `syllabus_calendar/settings.py` contains project configuration, including the
   installed built-in Django apps and SQLite database setting.
-- `syllabus_calendar/urls.py` contains the project's URL table. It currently
-  exposes only Django's default admin route.
+- `syllabus_calendar/urls.py` contains the project's URL table.
 - `syllabus_calendar/asgi.py` and `syllabus_calendar/wsgi.py` are entry points
   used by different kinds of web servers later.
 - `requirements.txt` records the Django dependency.

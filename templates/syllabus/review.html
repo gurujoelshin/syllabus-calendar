@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Review events - Syllabus Calendar{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>Review: {{ filename }}</h1>
+
+  {% if formset.forms %}
+    <p class="muted">
+      The AI found {{ formset.total_form_count }} event{{ formset.total_form_count|pluralize }}
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+      {# The management form is required: it tells Django how many rows there are. #}
+      {{ formset.management_form }}
+
+      {% if formset.non_form_errors %}
+        <div class="form-errors">{{ formset.non_form_errors }}</div>
+      {% endif %}
+
+      <div class="select-links">
+        <button type="button" class="link-button" data-select="all">Select all</button> ·
+        <button type="button" class="link-button" data-select="none">Select none</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="review-table import-table">
+          <thead>
+            <tr>
+              <th>Add</th>
+              <th>Date</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Event</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for form in formset %}
+              <tr class="{% if form.errors %}row-has-error{% endif %}">
+                <td class="center">{{ form.include }}</td>
+                <td>{{ form.date }}{% for error in form.date.errors %}<small class="error">{{ error }}</small>{% endfor %}</td>
+                <td>{{ form.start_time }}{% for error in form.start_time.errors %}<small class="error">{{ error }}</small>{% endfor %}</td>
+                <td>{{ form.end_time }}{% for error in form.end_time.errors %}<small class="error">{{ error }}</small>{% endfor %}</td>
+                <td class="title-cell">
+                  {{ form.title }}
+                  {% for error in form.title.errors %}<small class="error">{{ error }}</small>{% endfor %}
+                  {{ form.details }}
+                  {% if form.details.value %}<small class="muted">{{ form.details.value }}</small>{% endif %}
+                </td>
+                <td>{{ form.category }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="button">Add ticked events to calendar</button>
+        <a class="button button-quiet" href="{% url 'syllabus_upload' %}">Upload a different file</a>
+      </div>
+    </form>
+
+    <script>
+      // "Select all" / "Select none" tick or untick every row's checkbox.
+      document.querySelectorAll("[data-select]").forEach(function (link) {
+        link.addEventListener("click", function () {
+          var tick = link.dataset.select === "all";
+          document.querySelectorAll('.import-table input[type="checkbox"]').forEach(function (box) {
+            box.checked = tick;
+          });
+        });
+      });
+    </script>
+  {% else %}
+    <p>
+      The AI didn't find any dated events in that file. If the syllabus lists
+      dates only by week number ("Week 5"), the tool cannot add the events (missing dates)
+    </p>
+    <div class="form-actions">
+      <a class="button button-quiet" href="{% url 'syllabus_upload' %}">Upload a different file</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

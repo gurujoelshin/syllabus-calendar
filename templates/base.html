@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Syllabus Calendar{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'calendar' %}">Syllabus Calendar</a>
+
+    {% if user.is_authenticated %}
+      <nav class="nav">
+        <a href="{% url 'calendar' %}">Calendar</a>
+        <a href="{% url 'event_add' %}">Add event</a>
+        <a href="{% url 'syllabus_upload' %}">Import syllabus</a>
+        {% if user.is_staff %}
+          <a href="{% url 'admin:index' %}">Admin</a>
+        {% endif %}
+        <span class="nav-user">{{ user.username }}</span>
+        {# Logging out must be a POST request (a form), not a plain link. #}
+        <form method="post" action="{% url 'logout' %}" class="inline-form">
+          {% csrf_token %}
+          <button type="submit" class="link-button">Log out</button>
+        </form>
+      </nav>
+    {% else %}
+      <nav class="nav">
+        <a href="{% url 'login' %}">Log in</a>
+        <a href="{% url 'signup' %}">Sign up</a>
+      </nav>
+    {% endif %}
+  </header>
+
+  <main class="page">
+    {# Short notices such as "Event saved." #}
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="message message-{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

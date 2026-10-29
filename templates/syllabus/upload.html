@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Import a syllabus - Syllabus Calendar{% endblock %}
+
+{% block content %}
+<section class="card narrow">
+  <h1>Import a syllabus</h1>
+  <p class="muted">
+    Upload a course syllabus and the AI tool will find exams, due dates, and other
+    dated items. Once the AI parses the syllabus, a review page will be given for you to
+    check your events against your syllabus.
+  </p>
+
+  {# enctype="multipart/form-data" is required for any form that uploads files. #}
+  <form method="post" enctype="multipart/form-data" id="upload-form">
+    {% csrf_token %}
+    {% include "partials/form_fields.html" %}
+
+    <div class="form-actions">
+      <button type="submit" class="button" id="upload-button">Read syllabus</button>
+      <a class="button button-quiet" href="{% url 'calendar' %}">Cancel</a>
+    </div>
+    <p class="muted working-note" id="working-note" hidden>
+      Reading your syllabus. This usually takes 5–20 seconds…
+    </p>
+  </form>
+
+  <p class="muted small-print">
+    Disclaimer: The text of your file is sent to an AI model owned by Google (Gemini 3.5 Flash-Lite).
+    The API is currently configured to the free tier; Google may use information input into the model to improve its products.
+    Do not put any files containing sensitive or personal information (e.g. PII, CUI).
+  </p>
+</section>
+
+<script>
+  // The AI takes a few seconds, so when the form is submitted we disable
+  // the button (to stop double-clicks) and show the "Reading..." note.
+  document.getElementById("upload-form").addEventListener("submit", function () {
+    var button = document.getElementById("upload-button");
+    button.disabled = true;
+    button.textContent = "Reading…";
+    document.getElementById("working-note").hidden = false;
+  });
+</script>
+{% endblock %}

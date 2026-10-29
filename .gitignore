@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# Local database (each person creates their own with "migrate")
+db.sqlite3
+
+# Secrets (used later for the AI API key)
+.env

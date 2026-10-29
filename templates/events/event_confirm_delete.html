@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Delete event · Syllabus Calendar{% endblock %}
+
+{% block content %}
+<section class="card narrow">
+  <h1>Delete this event?</h1>
+  <p>
+    <strong>{{ event.title }}</strong><br>
+    {{ event.local_start|date:"l, F j, Y" }}{% if not event.all_day %} at {{ event.local_start|time:"g:i A" }}{% endif %}
+  </p>
+  <p class="muted">This can't be undone.</p>
+
+  {# Deleting uses a POST form so it can't happen just by visiting a link. #}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-actions">
+      <button type="submit" class="button button-danger">Yes, delete it</button>
+      <a class="button button-quiet" href="{% url 'event_edit' event.pk %}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

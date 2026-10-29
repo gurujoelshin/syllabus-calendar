@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Sign up · Syllabus Calendar{% endblock %}
+
+{% block content %}
+<section class="card narrow">
+  <h1>Create an account</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% include "partials/form_fields.html" %}
+    <button type="submit" class="button">Sign up</button>
+  </form>
+  <p class="muted">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+</section>
+{% endblock %}

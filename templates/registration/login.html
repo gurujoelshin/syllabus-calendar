@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{# Django's built-in LoginView looks for this exact file name. #}
+
+{% block title %}Log in · Syllabus Calendar{% endblock %}
+
+{% block content %}
+<section class="card narrow">
+  <h1>Log in</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% include "partials/form_fields.html" %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="button">Log in</button>
+  </form>
+  <p class="muted">No account yet? <a href="{% url 'signup' %}">Sign up</a></p>
+</section>
+{% endblock %}

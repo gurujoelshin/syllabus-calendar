@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ month_name }} {{ year }} · Syllabus Calendar{% endblock %}
+
+{% block content %}
+<div class="calendar-layout">
+
+  <section class="calendar">
+    <div class="calendar-header">
+      <a class="arrow" href="{% url 'calendar_month' prev_year prev_month %}" aria-label="Previous month">&larr;</a>
+      <h1>{{ month_name }} {{ year }}</h1>
+      <a class="arrow" href="{% url 'calendar_month' next_year next_month %}" aria-label="Next month">&rarr;</a>
+      <a class="button button-small button-quiet" href="{% url 'calendar' %}">Today</a>
+    </div>
+
+    <div class="grid">
+      {% for name in weekday_names %}
+        <div class="weekday">{{ name }}</div>
+      {% endfor %}
+
+      {% for week in weeks %}
+        {% for day in week %}
+          <div class="day{% if not day.in_month %} day-other-month{% endif %}{% if day.is_today %} day-today{% endif %}">
+            {# Clicking the date number opens the add form for that day. #}
+            <a class="day-number" href="{% url 'event_add' %}?date={{ day.date|date:'Y-m-d' }}"
+               title="Add an event on {{ day.date|date:'M j' }}">{{ day.date.day }}</a>
+
+            {% for event in day.events %}
+              <a class="event-chip cat-{{ event.category }}" href="{% url 'event_edit' event.pk %}"
+                 title="{{ event.title }}">
+                {% if not event.all_day %}<span class="event-time">{{ event.local_start|time:"g:iA"|lower }}</span>{% endif %}
+                {{ event.title }}
+              </a>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <aside class="sidebar">
+    <a class="button button-block" href="{% url 'event_add' %}">+ Add event</a>
+
+    <h2>Upcoming</h2>
+    {% if upcoming %}
+      <ul class="upcoming">
+        {% for event in upcoming %}
+          <li>
+            <span class="dot cat-{{ event.category }}"></span>
+            <a href="{% url 'event_edit' event.pk %}">{{ event.title }}</a>
+            <small>
+              {{ event.local_start|date:"D, M j" }}{% if not event.all_day %} · {{ event.local_start|time:"g:i A" }}{% endif %}
+            </small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">Nothing coming up. Click a date to add an event.</p>
+    {% endif %}
+
+    <h2>Key</h2>
+    <ul class="legend">
+      <li><span class="dot cat-class"></span>Class</li>
+      <li><span class="dot cat-assignment"></span>Assignment</li>
+      <li><span class="dot cat-exam"></span>Exam</li>
+      <li><span class="dot cat-reading"></span>Reading</li>
+      <li><span class="dot cat-other"></span>Other</li>
+    </ul>
+  </aside>
+
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{# One template is used for both adding and editing; is_new tells them apart. #}
+
+{% block title %}{% if is_new %}Add event{% else %}Edit event{% endif %} · Syllabus Calendar{% endblock %}
+
+{% block content %}
+<section class="card narrow">
+  <h1>{% if is_new %}Add an event{% else %}Edit event{% endif %}</h1>
+
+  {% if event and event.source == "syllabus" %}
+    <p class="muted">This event was imported from a syllabus.</p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {% include "partials/form_fields.html" %}
+
+    <div class="form-actions">
+      <button type="submit" class="button">{% if is_new %}Add event{% else %}Save changes{% endif %}</button>
+      <a class="button button-quiet" href="{% url 'calendar' %}">Cancel</a>
+      {% if not is_new %}
+        <a class="button button-danger push-right" href="{% url 'event_delete' event.pk %}">Delete</a>
+      {% endif %}
+    </div>
+  </form>
+</section>
+{% endblock %}
